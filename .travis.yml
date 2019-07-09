@@ -11,5 +11,5 @@ env:
     - ADB_INSTALL_TIMEOUT=8
 
 # Run assemble and unit tests
-script:
-  - ./gradlew clean assembleDebug assembleRelease testDebug
+# script:
+# - ./gradlew clean assembleDebug assembleRelease testDebug
