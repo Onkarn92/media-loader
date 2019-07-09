@@ -1,14 +1,48 @@
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
+/*
+ * Created by Onkar Nene on 9/7/19 5:35 PM
+ *
+ * Copyright (c) 2019 Onkar Nene. All rights reserved.
+ */
 
+/** Top-level build script to be used by all modules. */
 buildscript {
-	ext.kotlin_version = '1.3.41'
+	/** Incremental version number for major releases/updates like: Addition of new module or functionality which will add new workflow. */
+	def majorVersion = 1
+	/** Incremental version number for minor updates like: Interface changes or minor enhancements in existing modules. */
+	def minorVersion = 0
+	/** Incremental version number for patches or bug fixes. */
+	def patchVersion = 0
+	
+	/** Defining versions in common place so it can be used by other modules. */
+	ext {
+		/** SDK and app versions. */
+		version_code = majorVersion * 1000 + minorVersion * 100 + patchVersion
+		version_name = "${majorVersion}.${minorVersion}.${patchVersion}"
+		compile_sdk_version = 28
+		min_sdk_version = 21
+		target_sdk_version = 28
+		
+		/** Top-level and module-level dependency versions. */
+		kotlin_version = '1.3.41'
+		core_ktx_version = '1.0.2'
+		appcompat_version = '1.0.2'
+		junit_version = '4.12'
+		test_runner_version = '1.1.1'
+		espresso_core_version = '3.2.0'
+		constraint_layout_version = '1.1.3'
+	}
+	
 	repositories {
+		mavenCentral()
 		google()
 		jcenter()
 	}
+	
+	/** List of root-level dependencies. */
 	dependencies {
 		classpath 'com.android.tools.build:gradle:3.5.0-beta05'
 		classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+		
 		// NOTE: Do not place your application dependencies here; they belong
 		// in the individual module build.gradle files
 	}
@@ -18,6 +52,7 @@ allprojects {
 	repositories {
 		google()
 		jcenter()
+		mavenCentral()
 	}
 }
 
