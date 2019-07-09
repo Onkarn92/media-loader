@@ -51,4 +51,14 @@ dependencies {
 	testImplementation "junit:junit:$junit_version"
 	androidTestImplementation "androidx.test.ext:junit:$test_runner_version"
 	androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_core_version"
+	
+	// Dependency Injection
+	implementation "com.google.dagger:dagger:$dagger_version"
+	kapt "com.google.dagger:dagger-compiler:$dagger_version"
+	
+	// HTTP Client
+	implementation "com.squareup.okhttp3:okhttp:$okhttp_version"
+	
+	// Worker
+	implementation "androidx.work:work-runtime-ktx:$work_ktx_version"
 }
