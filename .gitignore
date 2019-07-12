@@ -2,9 +2,7 @@
 /build
 /release
 /.gradle
-*.jar
-*.bat
-gradlew
+*.sh
 
 # Generated files
 bin/
