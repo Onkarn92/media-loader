@@ -4,6 +4,7 @@
 /.gradle
 *.jar
 *.bat
+*.sh
 gradlew
 
 # Generated files

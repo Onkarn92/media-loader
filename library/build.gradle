@@ -36,6 +36,10 @@ android {
 		targetCompatibility JavaVersion.VERSION_1_8
 		sourceCompatibility JavaVersion.VERSION_1_8
 	}
+	
+	lintOptions {
+		abortOnError false
+	}
 }
 
 /** List of all support and third-party dependencies for the app module. */
