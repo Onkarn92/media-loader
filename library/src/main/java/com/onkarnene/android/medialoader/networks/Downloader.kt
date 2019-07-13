@@ -6,6 +6,7 @@
 
 package com.onkarnene.android.medialoader.networks
 
+import com.onkarnene.android.medialoader.data.Cache
 import com.onkarnene.android.medialoader.utilities.NetworkUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -14,10 +15,13 @@ import okhttp3.Call
 import okhttp3.MediaType
 import okhttp3.ResponseBody
 
-class Downloader(private val url: String) : HttpOperationWrapper.HttpCallback {
+internal class Downloader(
+		private val url: String,
+		private val cache: Cache,
+		private val callback: DownloaderCallback
+) : HttpOperationWrapper.HttpCallback {
 	
 	private lateinit var call: Call
-	private lateinit var callback: DownloaderCallback
 	
 	override fun onResponse(
 			call: Call,
@@ -25,42 +29,36 @@ class Downloader(private val url: String) : HttpOperationWrapper.HttpCallback {
 			error: Pair<String?, Throwable?>,
 			body: ResponseBody?
 	) {
-		if (this::callback.isInitialized) {
-			if (result != null) {
-				callback.onSuccess(result, body?.contentType())
-			} else {
-				callback.onFailed(error, body)
+		if (result != null) {
+			val mediaType = body?.contentType()
+			if (mediaType != null) {
+				cache.put(url, result to mediaType)
 			}
+			callback.onSuccess(result, mediaType)
+		} else {
+			callback.onFailed(error, body)
 		}
 	}
 	
-	fun init(
-			isSynchronous: Boolean,
-			downloaderCallback: DownloaderCallback
-	) {
-		callback = downloaderCallback
+	fun init(isSynchronous: Boolean) {
 		call = NetworkUtils.getCaller(url)
 		processRequest(isSynchronous)
 	}
 	
 	fun cancel() {
-		if (this@Downloader::callback.isInitialized) {
-			if (this@Downloader::call.isInitialized && !call.isCanceled() && call.isExecuted()) {
-				call.cancel()
-				callback.onCancel()
-			}
+		if (this@Downloader::call.isInitialized && !call.isCanceled() && call.isExecuted()) {
+			call.cancel()
+			callback.onCancel()
 		}
 	}
 	
 	private fun processRequest(isSynchronous: Boolean) {
 		GlobalScope.launch(Dispatchers.IO) {
-			if (this@Downloader::callback.isInitialized) {
-				if (this@Downloader::call.isInitialized) {
-					callback.inProgress()
-					HttpOperationWrapper(isSynchronous, call, this@Downloader).init()
-				} else {
-					callback.onCancel()
-				}
+			if (this@Downloader::call.isInitialized) {
+				callback.inProgress()
+				HttpOperationWrapper(isSynchronous, call, this@Downloader).init()
+			} else {
+				callback.onCancel()
 			}
 		}
 	}

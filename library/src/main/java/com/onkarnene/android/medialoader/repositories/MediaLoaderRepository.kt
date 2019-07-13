@@ -6,22 +6,41 @@
 
 package com.onkarnene.android.medialoader.repositories
 
+import com.onkarnene.android.medialoader.data.Cache
 import com.onkarnene.android.medialoader.networks.Downloader
 import com.onkarnene.android.medialoader.networks.Downloader.DownloaderCallback
 
-object MediaLoaderRepository {
+internal object MediaLoaderRepository {
 	
-	fun initDownloader(
+	private val lock = Any()
+	
+	fun isCached(
+			url: String,
+			cache: Cache,
+			callback: DownloaderCallback
+	): Boolean = synchronized(lock) {
+		val value = cache.get(url)
+		if (value != null) {
+			callback.onSuccess(value.first, value.second)
+			return@synchronized true
+		}
+		false
+	}
+	
+	fun getDownloader(
 			isSynchronous: Boolean,
 			url: String,
+			cache: Cache,
 			callback: DownloaderCallback
-	): Downloader {
-		val downloader = Downloader(url)
-		downloader.init(isSynchronous, callback)
-		return downloader
+	): Downloader = synchronized(lock) {
+		val downloader = Downloader(url, cache, callback)
+		downloader.init(isSynchronous)
+		downloader
 	}
 	
 	fun cancelLoad(downloader: Downloader) {
-		downloader.cancel()
+		synchronized(lock) {
+			downloader.cancel()
+		}
 	}
 }

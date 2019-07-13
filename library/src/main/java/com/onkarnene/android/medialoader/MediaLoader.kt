@@ -8,8 +8,12 @@ package com.onkarnene.android.medialoader
 
 import android.content.Context
 import android.graphics.BitmapFactory
+import android.view.View
+import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import androidx.annotation.DrawableRes
+import com.onkarnene.android.medialoader.data.Cache
+import com.onkarnene.android.medialoader.data.MemoryCache
 import com.onkarnene.android.medialoader.networks.Downloader
 import com.onkarnene.android.medialoader.networks.Downloader.DownloaderCallback
 import com.onkarnene.android.medialoader.repositories.MediaLoaderRepository
@@ -26,9 +30,11 @@ import okhttp3.MediaType
 import okhttp3.ResponseBody
 import java.lang.ref.WeakReference
 
-class MediaLoader<T> private constructor(
+@Suppress("unused")
+class MediaLoader<T : View> private constructor(
 		private val appContext: Context,
 		private val url: String,
+		private val cache: Cache,
 		private var isSynchronous: Boolean,
 		private val weakView: WeakReference<T>,
 		private val placeholder: Int,
@@ -44,11 +50,21 @@ class MediaLoader<T> private constructor(
 		when ("${mediaType?.type}/${mediaType?.subtype}") {
 			CONTENT_TYPE_JPG, CONTENT_TYPE_JPEG, CONTENT_TYPE_PNG -> {
 				GlobalScope.launch(Dispatchers.Main) {
-					val bitmap = BitmapFactory.decodeByteArray(result, 0, result.size)
-					if (bitmap != null && weakView.get() is ImageView) {
-						(weakView.get() as ImageView).setImageBitmap(bitmap)
-					} else {
-						throw IllegalStateException("Response cannot be converted in bitmap or view is not supporting bitmap images.")
+					val view: View = weakView.get() as View
+					try {
+						if (view is ImageView) {
+							val bitmap = BitmapFactory.decodeByteArray(result, 0, result.size)
+							if (bitmap != null) {
+								view.setImageBitmap(bitmap)
+								view.startAnimation(AnimationUtils.loadAnimation(appContext, android.R.anim.fade_in))
+							} else {
+								setImage(view, errorPlaceholder)
+							}
+						} else {
+							throw IllegalStateException("View does not support bitmap images.")
+						}
+					} catch (e: OutOfMemoryError) {
+						setImage(view, errorPlaceholder)
 					}
 				}
 			}
@@ -61,9 +77,7 @@ class MediaLoader<T> private constructor(
 	
 	override fun inProgress() {
 		GlobalScope.launch(Dispatchers.Main) {
-			if (weakView.get() is ImageView) {
-				(weakView.get() as ImageView).setImageResource(placeholder)
-			}
+			setImage(weakView.get() as View, placeholder)
 		}
 	}
 	
@@ -72,9 +86,7 @@ class MediaLoader<T> private constructor(
 			body: ResponseBody?
 	) {
 		GlobalScope.launch(Dispatchers.Main) {
-			if (weakView.get() is ImageView) {
-				(weakView.get() as ImageView).setImageResource(errorPlaceholder)
-			}
+			setImage(weakView.get() as View, errorPlaceholder)
 		}
 	}
 	
@@ -82,7 +94,9 @@ class MediaLoader<T> private constructor(
 	}
 	
 	fun download() {
-		downloader = MediaLoaderRepository.initDownloader(isSynchronous, url, this)
+		if (!MediaLoaderRepository.isCached(url, cache, this)) {
+			downloader = MediaLoaderRepository.getDownloader(isSynchronous, url, cache, this)
+		}
 	}
 	
 	fun cancel() {
@@ -91,8 +105,19 @@ class MediaLoader<T> private constructor(
 		}
 	}
 	
-	class Builder<T> constructor(private val context: Context) {
+	private fun setImage(
+			view: View,
+			resourceId: Int
+	) {
+		if (view is ImageView) {
+			view.setImageResource(resourceId)
+			view.startAnimation(AnimationUtils.loadAnimation(appContext, android.R.anim.fade_in))
+		}
+	}
+	
+	class Builder<T : View> constructor(private val context: Context) {
 		private lateinit var weakView: WeakReference<T>
+		private lateinit var cache: Cache
 		private var url: String = ""
 		private var placeholder: Int = R.drawable.loading_placeholder
 		private var errorPlaceholder: Int = R.drawable.error_placeholder
@@ -123,6 +148,16 @@ class MediaLoader<T> private constructor(
 			return this
 		}
 		
+		fun useMemoryCache(
+				capacity: Int = MemoryCache.DEFAULT_CAPACITY,
+				timeoutInMillis: Long = MemoryCache.DEFAULT_TIMEOUT
+		): Builder<T> {
+			cache = MemoryCache.getInstance()
+			MemoryCache.setCapacity(capacity)
+			MemoryCache.setTimeout(timeoutInMillis)
+			return this
+		}
+		
 		fun create(): MediaLoader<T> {
 			if (url.isEmpty()) {
 				throw IllegalArgumentException("Url should not be empty.")
@@ -130,7 +165,16 @@ class MediaLoader<T> private constructor(
 			if (!this::weakView.isInitialized) {
 				throw IllegalArgumentException("View should not be empty.")
 			}
-			return MediaLoader(this.context.applicationContext, this.url, this.isSynchronous, this.weakView, this.placeholder, this.errorPlaceholder)
+			if (!this::cache.isInitialized) {
+				useMemoryCache()
+			}
+			return MediaLoader(this.context.applicationContext,
+			                   this.url,
+			                   this.cache,
+			                   this.isSynchronous,
+			                   this.weakView,
+			                   this.placeholder,
+			                   this.errorPlaceholder)
 		}
 	}
 }

@@ -12,7 +12,7 @@ import okhttp3.Request
 import java.net.HttpURLConnection
 import java.util.concurrent.TimeUnit.*
 
-object NetworkUtils {
+internal object NetworkUtils {
 	
 	private const val CODE_UNKNOWN: Int = 0
 	private const val HTTP_REQUEST_FAIL = "Request Fail"

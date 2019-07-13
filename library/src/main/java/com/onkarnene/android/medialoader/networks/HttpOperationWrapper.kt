@@ -14,7 +14,7 @@ import okhttp3.Response
 import okhttp3.ResponseBody
 import java.io.IOException
 
-class HttpOperationWrapper constructor(
+internal class HttpOperationWrapper constructor(
 		private val isSynchronous: Boolean = true,
 		private val call: Call,
 		private val httpCallbacks: HttpCallback
