@@ -54,6 +54,7 @@ dependencies {
 	// Testing
 	testImplementation "junit:junit:${junit_version}"
 	testImplementation "org.mockito:mockito-core:${mockito_version}"
+	testImplementation "androidx.test:core-ktx:${roboelectric_version}"
 	androidTestImplementation "androidx.test.ext:junit:${test_runner_version}"
 	androidTestImplementation "androidx.test.espresso:espresso-core:${espresso_core_version}"
 	
@@ -63,6 +64,7 @@ dependencies {
 	
 	// HTTP Client
 	implementation "com.squareup.okhttp3:okhttp:${okhttp_version}"
+	testImplementation "com.squareup.okhttp3:mockwebserver:${okhttp_version}"
 	
 	// Worker
 	implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:${coroutines_version}"
