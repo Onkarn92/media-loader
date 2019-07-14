@@ -15,13 +15,12 @@ import okhttp3.Call
 import okhttp3.MediaType
 import okhttp3.ResponseBody
 
-internal class Downloader(
-		private val url: String,
-		private val cache: Cache,
-		private val callback: DownloaderCallback
-) : HttpOperationWrapper.HttpCallback {
+internal class Downloader : HttpOperationWrapper.HttpCallback {
 	
 	private lateinit var call: Call
+	private lateinit var url: String
+	private lateinit var cache: Cache
+	private lateinit var callback: DownloaderCallback
 	
 	override fun onResponse(
 			call: Call,
@@ -40,26 +39,31 @@ internal class Downloader(
 		}
 	}
 	
-	fun init(isSynchronous: Boolean) {
-		call = NetworkUtils.getCaller(url)
-		processRequest(isSynchronous)
+	fun init(
+			isSynchronous: Boolean,
+			url: String,
+			cache: Cache,
+			callback: DownloaderCallback,
+			httpOperationWrapper: HttpOperationWrapper
+	) {
+		this.call = NetworkUtils.getCaller(url)
+		this.url = url
+		this.cache = cache
+		this.callback = callback
+		GlobalScope.launch(Dispatchers.IO) {
+			if (this@Downloader::call.isInitialized) {
+				callback.inProgress()
+				httpOperationWrapper.init(isSynchronous, call, this@Downloader)
+			} else {
+				callback.onCancel()
+			}
+		}
 	}
 	
 	fun cancel() {
 		if (this@Downloader::call.isInitialized && !call.isCanceled() && call.isExecuted()) {
 			call.cancel()
 			callback.onCancel()
-		}
-	}
-	
-	private fun processRequest(isSynchronous: Boolean) {
-		GlobalScope.launch(Dispatchers.IO) {
-			if (this@Downloader::call.isInitialized) {
-				callback.inProgress()
-				HttpOperationWrapper(isSynchronous, call, this@Downloader).init()
-			} else {
-				callback.onCancel()
-			}
 		}
 	}
 	

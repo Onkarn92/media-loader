@@ -14,13 +14,18 @@ import okhttp3.Response
 import okhttp3.ResponseBody
 import java.io.IOException
 
-internal class HttpOperationWrapper constructor(
-		private val isSynchronous: Boolean = true,
-		private val call: Call,
-		private val httpCallbacks: HttpCallback
-) {
+internal class HttpOperationWrapper {
 	
-	fun init() {
+	private lateinit var call: Call
+	private lateinit var httpCallbacks: HttpCallback
+	
+	fun init(
+			isSynchronous: Boolean = true,
+			call: Call,
+			httpCallbacks: HttpCallback
+	) {
+		this.call = call
+		this.httpCallbacks = httpCallbacks
 		if (isSynchronous) {
 			executeRequest()
 		} else {

@@ -12,8 +12,6 @@ import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import androidx.annotation.DrawableRes
-import com.onkarnene.android.medialoader.components.DaggerCacheComponent
-import com.onkarnene.android.medialoader.data.Cache
 import com.onkarnene.android.medialoader.data.MemoryCache
 import com.onkarnene.android.medialoader.networks.Downloader
 import com.onkarnene.android.medialoader.networks.Downloader.DownloaderCallback
@@ -35,7 +33,6 @@ import java.lang.ref.WeakReference
 class MediaLoader<T : View> private constructor(
 		private val appContext: Context,
 		private val url: String,
-		private val cache: Cache,
 		private val isSynchronous: Boolean,
 		private val weakView: WeakReference<T>,
 		private val placeholder: Int,
@@ -94,9 +91,17 @@ class MediaLoader<T : View> private constructor(
 	override fun onCancel() {
 	}
 	
-	fun download() {
-		if (!MediaLoaderRepository.isCached(url, cache, this)) {
-			downloader = MediaLoaderRepository.getDownloader(isSynchronous, url, cache, this)
+	fun configMemoryCache(
+			capacity: Int,
+			timeoutInMillis: Long
+	) {
+		MemoryCache.setCapacity(capacity)
+		MemoryCache.setTimeout(timeoutInMillis)
+	}
+	
+	fun download(useMemoryCache: Boolean = true) {
+		if (!MediaLoaderRepository.isCached(url, useMemoryCache, this)) {
+			downloader = MediaLoaderRepository.getDownloader(isSynchronous, url, useMemoryCache, this)
 		}
 	}
 	
@@ -118,7 +123,6 @@ class MediaLoader<T : View> private constructor(
 	
 	class Builder<T : View> constructor(private val context: Context) {
 		private lateinit var weakView: WeakReference<T>
-		private lateinit var cache: Cache
 		private var url: String = ""
 		private var placeholder: Int = R.drawable.loading_placeholder
 		private var errorPlaceholder: Int = R.drawable.error_placeholder
@@ -149,17 +153,6 @@ class MediaLoader<T : View> private constructor(
 			return this
 		}
 		
-		fun useMemoryCache(
-				capacity: Int = MemoryCache.DEFAULT_CAPACITY,
-				timeoutInMillis: Long = MemoryCache.DEFAULT_TIMEOUT
-		): Builder<T> {
-			val memoryCache = DaggerCacheComponent.create().getMemoryCache()
-			memoryCache.setCapacity(capacity)
-			memoryCache.setTimeout(timeoutInMillis)
-			cache = memoryCache
-			return this
-		}
-		
 		fun create(): MediaLoader<T> {
 			if (url.isEmpty()) {
 				throw IllegalArgumentException("Url should not be empty.")
@@ -167,16 +160,7 @@ class MediaLoader<T : View> private constructor(
 			if (!this::weakView.isInitialized) {
 				throw IllegalArgumentException("View should not be empty.")
 			}
-			if (!this::cache.isInitialized) {
-				useMemoryCache()
-			}
-			return MediaLoader(this.context.applicationContext,
-			                   this.url,
-			                   this.cache,
-			                   this.isSynchronous,
-			                   this.weakView,
-			                   this.placeholder,
-			                   this.errorPlaceholder)
+			return MediaLoader(this.context.applicationContext, this.url, this.isSynchronous, this.weakView, this.placeholder, this.errorPlaceholder)
 		}
 	}
 }

@@ -17,11 +17,12 @@ internal class MemoryCache private constructor() : Cache {
 		/**
 		 * Item will expire after 1 minute by default; If not used.
 		 */
-		const val DEFAULT_TIMEOUT: Long = 60000
+		private const val DEFAULT_TIMEOUT: Long = 60000
+		
 		/**
 		 * Default capacity of map.
 		 */
-		const val DEFAULT_CAPACITY: Int = 100
+		private const val DEFAULT_CAPACITY: Int = 100
 		
 		@Volatile private var memoryCache: MemoryCache? = null
 		
@@ -33,20 +34,20 @@ internal class MemoryCache private constructor() : Cache {
 			}
 			memoryCache ?: throw NullPointerException("Object creation failed.")
 		}
+		
+		fun setCapacity(capacity: Int = DEFAULT_CAPACITY) {
+			getInstance().maxCapacity = capacity
+		}
+		
+		fun setTimeout(millis: Long = DEFAULT_TIMEOUT) {
+			getInstance().timeout = millis
+		}
 	}
 	
 	private val map by lazy {LinkedHashMap<String, Triple<Long, ByteArray, MediaType>>()}
 	
 	private var maxCapacity: Int = DEFAULT_CAPACITY
 	private var timeout: Long = DEFAULT_TIMEOUT
-	
-	fun setCapacity(capacity: Int) {
-		maxCapacity = capacity
-	}
-	
-	fun setTimeout(millis: Long) {
-		timeout = millis
-	}
 	
 	override fun get(key: String): Pair<ByteArray, MediaType>? = synchronized(lock) {
 		val value = map[key]
