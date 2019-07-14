@@ -12,6 +12,7 @@ import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import androidx.annotation.DrawableRes
+import com.onkarnene.android.medialoader.components.DaggerCacheComponent
 import com.onkarnene.android.medialoader.data.Cache
 import com.onkarnene.android.medialoader.data.MemoryCache
 import com.onkarnene.android.medialoader.networks.Downloader
@@ -35,7 +36,7 @@ class MediaLoader<T : View> private constructor(
 		private val appContext: Context,
 		private val url: String,
 		private val cache: Cache,
-		private var isSynchronous: Boolean,
+		private val isSynchronous: Boolean,
 		private val weakView: WeakReference<T>,
 		private val placeholder: Int,
 		private val errorPlaceholder: Int
@@ -152,7 +153,7 @@ class MediaLoader<T : View> private constructor(
 				capacity: Int = MemoryCache.DEFAULT_CAPACITY,
 				timeoutInMillis: Long = MemoryCache.DEFAULT_TIMEOUT
 		): Builder<T> {
-			val memoryCache = MemoryCache.getInstance()
+			val memoryCache = DaggerCacheComponent.create().getMemoryCache()
 			memoryCache.setCapacity(capacity)
 			memoryCache.setTimeout(timeoutInMillis)
 			cache = memoryCache
