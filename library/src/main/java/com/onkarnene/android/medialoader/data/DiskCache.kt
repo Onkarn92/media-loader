@@ -8,11 +8,21 @@ package com.onkarnene.android.medialoader.data
 
 import okhttp3.MediaType
 
-internal object DiskCache : Cache {
+internal class DiskCache private constructor() : Cache {
 	
-	private val lock = Any()
-	
-	fun getInstance(): DiskCache = this
+	companion object {
+		
+		@Volatile private var diskCache: DiskCache? = null
+		
+		private val lock = Any()
+		
+		fun getInstance(): DiskCache = diskCache ?: synchronized(lock) {
+			if (diskCache == null) {
+				diskCache = DiskCache()
+			}
+			diskCache ?: throw NullPointerException("Object creation failed.")
+		}
+	}
 	
 	override fun get(key: String): Pair<ByteArray, MediaType>? {
 		TODO("Not supported in release v1.0.0")

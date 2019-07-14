@@ -152,9 +152,10 @@ class MediaLoader<T : View> private constructor(
 				capacity: Int = MemoryCache.DEFAULT_CAPACITY,
 				timeoutInMillis: Long = MemoryCache.DEFAULT_TIMEOUT
 		): Builder<T> {
-			cache = MemoryCache.getInstance()
-			MemoryCache.setCapacity(capacity)
-			MemoryCache.setTimeout(timeoutInMillis)
+			val memoryCache = MemoryCache.getInstance()
+			memoryCache.setCapacity(capacity)
+			memoryCache.setTimeout(timeoutInMillis)
+			cache = memoryCache
 			return this
 		}
 		

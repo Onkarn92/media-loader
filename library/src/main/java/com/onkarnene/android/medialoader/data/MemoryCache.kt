@@ -11,21 +11,34 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import okhttp3.MediaType
 
-internal object MemoryCache : Cache {
+internal class MemoryCache private constructor() : Cache {
 	
-	/**
-	 * Item will expire after 1 minute by default; If not used.
-	 */
-	const val DEFAULT_TIMEOUT: Long = 60000
-	const val DEFAULT_CAPACITY: Int = 100
+	companion object {
+		/**
+		 * Item will expire after 1 minute by default; If not used.
+		 */
+		const val DEFAULT_TIMEOUT: Long = 60000
+		/**
+		 * Default capacity of map.
+		 */
+		const val DEFAULT_CAPACITY: Int = 100
+		
+		@Volatile private var memoryCache: MemoryCache? = null
+		
+		private val lock = Any()
+		
+		fun getInstance(): MemoryCache = memoryCache ?: synchronized(lock) {
+			if (memoryCache == null) {
+				memoryCache = MemoryCache()
+			}
+			memoryCache ?: throw NullPointerException("Object creation failed.")
+		}
+	}
 	
 	private val map by lazy {LinkedHashMap<String, Triple<Long, ByteArray, MediaType>>()}
 	
-	private val lock = Any()
 	private var maxCapacity: Int = DEFAULT_CAPACITY
 	private var timeout: Long = DEFAULT_TIMEOUT
-	
-	fun getInstance(): MemoryCache = this
 	
 	fun setCapacity(capacity: Int) {
 		maxCapacity = capacity
