@@ -47,21 +47,22 @@ dependencies {
 	implementation fileTree(dir: 'libs', include: ['*.jar'])
 	
 	// Kotlin & Support Libraries
-	implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
-	implementation "androidx.appcompat:appcompat:$appcompat_version"
-	implementation "androidx.core:core-ktx:$core_ktx_version"
+	implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlin_version}"
+	implementation "androidx.appcompat:appcompat:${appcompat_version}"
+	implementation "androidx.core:core-ktx:${core_ktx_version}"
 	
 	// Testing
-	testImplementation "junit:junit:$junit_version"
-	androidTestImplementation "androidx.test.ext:junit:$test_runner_version"
-	androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_core_version"
+	testImplementation "junit:junit:${junit_version}"
+	testImplementation "org.mockito:mockito-core:${mockito_version}"
+	androidTestImplementation "androidx.test.ext:junit:${test_runner_version}"
+	androidTestImplementation "androidx.test.espresso:espresso-core:${espresso_core_version}"
 	
 	// Dependency Injection
-	implementation "com.google.dagger:dagger:$dagger_version"
-	kapt "com.google.dagger:dagger-compiler:$dagger_version"
+	implementation "com.google.dagger:dagger:${dagger_version}"
+	kapt "com.google.dagger:dagger-compiler:${dagger_version}"
 	
 	// HTTP Client
-	implementation "com.squareup.okhttp3:okhttp:$okhttp_version"
+	implementation "com.squareup.okhttp3:okhttp:${okhttp_version}"
 	
 	// Worker
 	implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:${coroutines_version}"
