@@ -16,4 +16,6 @@ internal interface Cache {
 			key: String,
 			value: Pair<ByteArray, MediaType>
 	)
+	
+	fun clearCache()
 }

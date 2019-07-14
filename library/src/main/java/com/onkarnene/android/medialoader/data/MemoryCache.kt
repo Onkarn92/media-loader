@@ -72,4 +72,10 @@ internal object MemoryCache : Cache {
 			}
 		}
 	}
+	
+	override fun clearCache() {
+		synchronized(lock) {
+			map.clear()
+		}
+	}
 }
