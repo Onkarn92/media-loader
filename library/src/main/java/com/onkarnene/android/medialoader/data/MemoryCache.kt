@@ -6,6 +6,7 @@
 
 package com.onkarnene.android.medialoader.data
 
+import androidx.annotation.VisibleForTesting
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -36,16 +37,23 @@ internal class MemoryCache private constructor() : Cache {
 		}
 		
 		fun setCapacity(capacity: Int = DEFAULT_CAPACITY) {
+			if (capacity < 1){
+				throw IllegalArgumentException("Capacity must be greater than 0.")
+			}
 			getInstance().maxCapacity = capacity
 		}
 		
 		fun setTimeout(millis: Long = DEFAULT_TIMEOUT) {
+			if (millis < 10000){
+				throw IllegalArgumentException("Timeout must be greater than 10 seconds.")
+			}
 			getInstance().timeout = millis
 		}
 	}
 	
 	private val map by lazy {LinkedHashMap<String, Triple<Long, ByteArray, MediaType>>()}
 	
+	@VisibleForTesting
 	private var maxCapacity: Int = DEFAULT_CAPACITY
 	private var timeout: Long = DEFAULT_TIMEOUT
 	

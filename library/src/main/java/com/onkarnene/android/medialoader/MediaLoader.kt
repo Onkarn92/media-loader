@@ -8,6 +8,7 @@ package com.onkarnene.android.medialoader
 
 import android.content.Context
 import android.graphics.BitmapFactory
+import android.util.Patterns
 import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
@@ -156,6 +157,9 @@ class MediaLoader<T : View> private constructor(
 		fun create(): MediaLoader<T> {
 			if (url.isEmpty()) {
 				throw IllegalArgumentException("Url should not be empty.")
+			}
+			if (!Patterns.WEB_URL.matcher(url).matches()) {
+				throw IllegalArgumentException("Invalid Url detected.")
 			}
 			if (!this::weakView.isInitialized) {
 				throw IllegalArgumentException("View should not be empty.")
