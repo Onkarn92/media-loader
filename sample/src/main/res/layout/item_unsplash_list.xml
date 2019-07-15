@@ -16,7 +16,7 @@
 			android:layout_height="wrap_content"
 			android:orientation="vertical">
 		
-		<com.onkarnene.android.medialoader.sample.views.ResizableImageView
+		<com.onkarnene.android.medialoader.sample.views.widget.ResizableImageView
 				android:id="@+id/unsplashImage"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content" />

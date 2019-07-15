@@ -3,6 +3,7 @@
 	<dimen name="value_2">2dp</dimen>
 	<dimen name="value_5">5dp</dimen>
 	<dimen name="value_10">10dp</dimen>
+	<dimen name="value_15">15dp</dimen>
 	<dimen name="value_30">30dp</dimen>
 	<dimen name="value_35">35dp</dimen>
 	

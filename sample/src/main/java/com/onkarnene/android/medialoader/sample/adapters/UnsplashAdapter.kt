@@ -6,6 +6,7 @@
 
 package com.onkarnene.android.medialoader.sample.adapters
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -43,9 +44,10 @@ class UnsplashAdapter : RecyclerView.Adapter<ViewHolder>() {
 	
 	class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 		
+		@SuppressLint("SetTextI18n")
 		fun setData(unsplashResponse: UnsplashResponse) {
 			this.itemView.unsplashUserNameText.text = unsplashResponse.user.name
-			this.itemView.unsplashUserIdText.text = unsplashResponse.user.id
+			this.itemView.unsplashUserIdText.text = "ID: ${unsplashResponse.user.id}"
 			this.itemView.unsplashLikesText.text = unsplashResponse.likes.toString()
 			val drawable = if (unsplashResponse.likedByUser) R.drawable.ic_thumb_up_activated else R.drawable.ic_thumb_up_deactivated
 			this.itemView.unsplashLikesText.setCompoundDrawablesWithIntrinsicBounds(drawable, 0, 0, 0)

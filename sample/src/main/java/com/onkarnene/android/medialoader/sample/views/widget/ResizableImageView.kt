@@ -4,7 +4,7 @@
  * Copyright (c) 2019 Onkar Nene. All rights reserved.
  */
 
-package com.onkarnene.android.medialoader.sample.views
+package com.onkarnene.android.medialoader.sample.views.widget
 
 import android.content.Context
 import android.util.AttributeSet
