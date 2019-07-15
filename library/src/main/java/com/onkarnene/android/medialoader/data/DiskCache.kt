@@ -8,6 +8,10 @@ package com.onkarnene.android.medialoader.data
 
 import okhttp3.MediaType
 
+/**
+ * Responsible for maintaining disk cache.
+ * Currently not available for release v1.0.0
+ */
 internal class DiskCache private constructor() : Cache {
 	
 	companion object {
@@ -16,6 +20,9 @@ internal class DiskCache private constructor() : Cache {
 		
 		private val lock = Any()
 		
+		/**
+		 * Singleton implementation for DiskCache instance.
+		 */
 		fun getInstance(): DiskCache = diskCache ?: synchronized(lock) {
 			if (diskCache == null) {
 				diskCache = DiskCache()

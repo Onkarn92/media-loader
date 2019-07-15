@@ -30,6 +30,9 @@ import okhttp3.MediaType
 import okhttp3.ResponseBody
 import java.lang.ref.WeakReference
 
+/**
+ * Core module; Responsible for handling every request and loading respective responses in provide views.
+ */
 @Suppress("unused")
 class MediaLoader<T : View> private constructor(
 		private val appContext: Context,
@@ -92,6 +95,9 @@ class MediaLoader<T : View> private constructor(
 	override fun onCancel() {
 	}
 	
+	/**
+	 * Custom configuration for MemoryCache instance.
+	 */
 	fun configMemoryCache(
 			capacity: Int,
 			timeoutInMillis: Long
@@ -100,12 +106,18 @@ class MediaLoader<T : View> private constructor(
 		MemoryCache.setTimeout(timeoutInMillis)
 	}
 	
+	/**
+	 * Responsible to execute the request and load the result.
+	 */
 	fun download(useMemoryCache: Boolean = true) {
 		if (!MediaLoaderRepository.isCached(url, useMemoryCache, this)) {
 			downloader = MediaLoaderRepository.getDownloader(isSynchronous, url, useMemoryCache, this)
 		}
 	}
 	
+	/**
+	 * Force execute http call to cancel if not completed.
+	 */
 	fun cancel() {
 		if (this::downloader.isInitialized) {
 			MediaLoaderRepository.cancelLoad(downloader)
@@ -122,7 +134,12 @@ class MediaLoader<T : View> private constructor(
 		}
 	}
 	
+	/**
+	 * Builder pattern implementation for MediaLoader class.
+	 * @param context of the application or active window.
+	 */
 	class Builder<T : View> constructor(private val context: Context) {
+		
 		private lateinit var weakView: WeakReference<T>
 		private var url: String = ""
 		private var placeholder: Int = R.drawable.loading_placeholder

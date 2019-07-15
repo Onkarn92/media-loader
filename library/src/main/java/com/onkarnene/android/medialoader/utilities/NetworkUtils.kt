@@ -22,10 +22,16 @@ internal object NetworkUtils {
 	private val TIMEOUT = "Request Timeout" to Throwable("Due to the server or network unavailability request cannot proceed.")
 	private val MAINTENANCE_BREAK = "Maintenance Break" to Throwable("Sorry, the server is under maintenance. Please try again after some time.")
 	
+	/**
+	 * Single OkHttpClient instance created by lazy initialization.
+	 */
 	private val okHttpClient: OkHttpClient by lazy {
 		OkHttpClient().newBuilder().connectTimeout(20, SECONDS).readTimeout(20, SECONDS).build()
 	}
 	
+	/**
+	 * Builds and returns new http call for execution.
+	 */
 	fun getCaller(url: String): Call {
 		if (url.isEmpty() || url.isBlank()) {
 			throw IllegalArgumentException("Url should not be empty or blank.")
@@ -34,6 +40,9 @@ internal object NetworkUtils {
 		return okHttpClient.newCall(request)
 	}
 	
+	/**
+	 * Provide human readable error messages.
+	 */
 	fun getRequestFailReason(
 			code: Int = CODE_UNKNOWN,
 			throwable: Throwable? = null

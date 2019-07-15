@@ -15,6 +15,9 @@ import okhttp3.Call
 import okhttp3.MediaType
 import okhttp3.ResponseBody
 
+/**
+ * Base downloader implementation for fetching media data from remote source.
+ */
 internal class Downloader : HttpOperationWrapper.HttpCallback {
 	
 	private lateinit var call: Call
@@ -39,6 +42,9 @@ internal class Downloader : HttpOperationWrapper.HttpCallback {
 		}
 	}
 	
+	/**
+	 * Initialize the HTTP call.
+	 */
 	fun init(
 			isSynchronous: Boolean,
 			url: String,
@@ -60,6 +66,9 @@ internal class Downloader : HttpOperationWrapper.HttpCallback {
 		}
 	}
 	
+	/**
+	 * Cancels the current ongoing HTTP call.
+	 */
 	fun cancel() {
 		if (this@Downloader::call.isInitialized && !call.isCanceled() && call.isExecuted()) {
 			call.cancel()
@@ -67,19 +76,37 @@ internal class Downloader : HttpOperationWrapper.HttpCallback {
 		}
 	}
 	
+	/**
+	 * Provides callbacks to core module.
+	 */
 	interface DownloaderCallback {
+		
+		/**
+		 * Calls when response is successful and response body is not empty.
+		 * @param result downloaded data in byte array.
+		 * @param mediaType of currently downloaded data.
+		 */
 		fun onSuccess(
 				result: ByteArray,
 				mediaType: MediaType? = null
 		)
 		
+		/**
+		 * Triggers when request is initialized and ready to execute.
+		 */
 		fun inProgress()
 		
+		/**
+		 * Triggers when response is not successful or call failed due to some reason.
+		 */
 		fun onFailed(
 				errorPair: Pair<String?, Throwable?>,
 				body: ResponseBody? = null
 		)
 		
+		/**
+		 * Triggers when user manually cancels the executed call.
+		 */
 		fun onCancel()
 	}
 }

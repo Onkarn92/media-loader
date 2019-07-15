@@ -12,6 +12,9 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import okhttp3.MediaType
 
+/**
+ * Responsible for maintaining limited memory cache.
+ */
 internal class MemoryCache private constructor() : Cache {
 	
 	companion object {
@@ -29,6 +32,9 @@ internal class MemoryCache private constructor() : Cache {
 		
 		private val lock = Any()
 		
+		/**
+		 * Singleton implementation for MemoryCache instance.
+		 */
 		fun getInstance(): MemoryCache = memoryCache ?: synchronized(lock) {
 			if (memoryCache == null) {
 				memoryCache = MemoryCache()
@@ -36,15 +42,23 @@ internal class MemoryCache private constructor() : Cache {
 			memoryCache ?: throw NullPointerException("Object creation failed.")
 		}
 		
+		/**
+		 * Configure map capacity.
+		 * @param capacity should not be less than 1.
+		 */
 		fun setCapacity(capacity: Int = DEFAULT_CAPACITY) {
-			if (capacity < 1){
+			if (capacity < 1) {
 				throw IllegalArgumentException("Capacity must be greater than 0.")
 			}
 			getInstance().maxCapacity = capacity
 		}
 		
+		/**
+		 * Configure cache timeout for each item.
+		 * @param millis should not be less than 10000 (i.e. 10 seconds).
+		 */
 		fun setTimeout(millis: Long = DEFAULT_TIMEOUT) {
-			if (millis < 10000){
+			if (millis < 10000) {
 				throw IllegalArgumentException("Timeout must be greater than 10 seconds.")
 			}
 			getInstance().timeout = millis
@@ -53,8 +67,7 @@ internal class MemoryCache private constructor() : Cache {
 	
 	private val map by lazy {LinkedHashMap<String, Triple<Long, ByteArray, MediaType>>()}
 	
-	@VisibleForTesting
-	private var maxCapacity: Int = DEFAULT_CAPACITY
+	@VisibleForTesting private var maxCapacity: Int = DEFAULT_CAPACITY
 	private var timeout: Long = DEFAULT_TIMEOUT
 	
 	override fun get(key: String): Pair<ByteArray, MediaType>? = synchronized(lock) {

@@ -17,6 +17,10 @@ internal object MediaLoaderRepository {
 	
 	private val component = DaggerMediaLoaderComponent.builder().cacheComponent(DaggerCacheComponent.create()).build()
 	
+	/**
+	 * Check if data is cached or not.
+	 * @return true if and only if data is cached and not expired.
+	 */
 	fun isCached(
 			url: String,
 			isMemoryCache: Boolean = true,
@@ -30,6 +34,9 @@ internal object MediaLoaderRepository {
 		false
 	}
 	
+	/**
+	 * @return executed Downloader instance.
+	 */
 	fun getDownloader(
 			isSynchronous: Boolean,
 			url: String,
@@ -45,6 +52,9 @@ internal object MediaLoaderRepository {
 		downloader
 	}
 	
+	/**
+	 * Force executed call to be cancel.
+	 */
 	fun cancelLoad(downloader: Downloader) {
 		synchronized(lock) {
 			downloader.cancel()

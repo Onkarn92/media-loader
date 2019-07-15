@@ -19,6 +19,13 @@ internal class HttpOperationWrapper {
 	private lateinit var call: Call
 	private lateinit var httpCallbacks: HttpCallback
 	
+	/**
+	 * Initialize the HTTP call.
+	 *
+	 * @param call          to be execute.
+	 * @param httpCallbacks of registered API wrapper.
+	 * @param isSynchronous true if call is synchronous, default is false
+	 */
 	fun init(
 			isSynchronous: Boolean = true,
 			call: Call,
@@ -33,6 +40,10 @@ internal class HttpOperationWrapper {
 		}
 	}
 	
+	/**
+	 * Enqueue Http Request and return response/failure using registered callback function.
+	 * This is asynchronous call.
+	 */
 	private fun enqueueRequest() = call.enqueue(object : Callback {
 		override fun onFailure(
 				call: Call,
@@ -55,6 +66,10 @@ internal class HttpOperationWrapper {
 		}
 	})
 	
+	/**
+	 * Execute Http Request and return response/failure using registered callback function.
+	 * This is synchronous call.
+	 */
 	@WorkerThread
 	private fun executeRequest() {
 		try {
@@ -76,6 +91,14 @@ internal class HttpOperationWrapper {
 	
 	interface HttpCallback {
 		
+		/**
+		 * Callback function for any type of response.
+		 *
+		 * @param call      instance of executed [Call].
+		 * @param result    contains response body.
+		 * @param error     contains human readable exception.
+		 * @param body      contains error body.
+		 */
 		fun onResponse(
 				call: Call,
 				result: ByteArray? = null,
