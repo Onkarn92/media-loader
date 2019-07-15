@@ -7,4 +7,7 @@
 	<string name="same_image_implementation">Request same image multiple times simultaneously and cancel any call.</string>
 	<string name="try_same_image">Try</string>
 	<string name="default_likes">12</string>
+	<string name="same_image_activity_title">Same Image</string>
+	<string name="unsplash_activity_title">Unsplash</string>
+	<string name="random_user_activity_title">Random User</string>
 </resources>

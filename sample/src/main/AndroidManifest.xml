@@ -16,11 +16,17 @@
 			android:usesCleartextTraffic="true"
 			tools:ignore="GoogleAppIndexingWarning,UnusedAttribute">
 		
-		<activity android:name=".views.SameImageActivity" />
+		<activity
+				android:name=".views.SameImageActivity"
+				android:label="@string/same_image_activity_title" />
 		
-		<activity android:name=".views.UserActivity" />
+		<activity
+				android:name=".views.UserActivity"
+				android:label="@string/random_user_activity_title" />
 		
-		<activity android:name=".views.UnsplashActivity" />
+		<activity
+				android:name=".views.UnsplashActivity"
+				android:label="@string/unsplash_activity_title" />
 		
 		<activity android:name=".views.MainActivity">
 			<intent-filter>
