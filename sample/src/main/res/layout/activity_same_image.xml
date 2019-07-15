@@ -1,9 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<androidx.appcompat.widget.LinearLayoutCompat
 		xmlns:android="http://schemas.android.com/apk/res/android"
+		xmlns:app="http://schemas.android.com/apk/res-auto"
 		xmlns:tools="http://schemas.android.com/tools"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
+		android:orientation="vertical"
 		tools:context=".views.SameImageActivity">
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+	
+	<androidx.appcompat.widget.LinearLayoutCompat
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:gravity="center_vertical"
+			android:orientation="horizontal"
+			android:padding="@dimen/value_10">
+		
+		<androidx.appcompat.widget.AppCompatImageView
+				android:id="@+id/imageOne"
+				android:layout_width="@dimen/value_300"
+				android:layout_height="@dimen/value_150" />
+		
+		<androidx.appcompat.widget.AppCompatImageView
+				android:id="@+id/cancelImageOne"
+				android:layout_width="@dimen/value_40"
+				android:layout_height="@dimen/value_40"
+				android:layout_margin="@dimen/value_15"
+				app:srcCompat="@drawable/ic_cancel_red" />
+	</androidx.appcompat.widget.LinearLayoutCompat>
+	
+	<androidx.appcompat.widget.LinearLayoutCompat
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:gravity="center_vertical"
+			android:orientation="horizontal"
+			android:padding="@dimen/value_10">
+		
+		<androidx.appcompat.widget.AppCompatImageView
+				android:id="@+id/imageTwo"
+				android:layout_width="@dimen/value_300"
+				android:layout_height="@dimen/value_150" />
+		
+		<androidx.appcompat.widget.AppCompatImageView
+				android:id="@+id/cancelImageTwo"
+				android:layout_width="@dimen/value_40"
+				android:layout_height="@dimen/value_40"
+				android:layout_margin="@dimen/value_15"
+				app:srcCompat="@drawable/ic_cancel_red" />
+	</androidx.appcompat.widget.LinearLayoutCompat>
+	
+	<androidx.appcompat.widget.LinearLayoutCompat
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:gravity="center_vertical"
+			android:orientation="horizontal"
+			android:padding="@dimen/value_10">
+		
+		<androidx.appcompat.widget.AppCompatImageView
+				android:id="@+id/imageThree"
+				android:layout_width="@dimen/value_300"
+				android:layout_height="@dimen/value_150" />
+		
+		<androidx.appcompat.widget.AppCompatImageView
+				android:id="@+id/cancelImageThree"
+				android:layout_width="@dimen/value_40"
+				android:layout_height="@dimen/value_40"
+				android:layout_margin="@dimen/value_15"
+				app:srcCompat="@drawable/ic_cancel_red" />
+	</androidx.appcompat.widget.LinearLayoutCompat>
+</androidx.appcompat.widget.LinearLayoutCompat>

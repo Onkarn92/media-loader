@@ -6,6 +6,10 @@
 	<dimen name="value_15">15dp</dimen>
 	<dimen name="value_30">30dp</dimen>
 	<dimen name="value_35">35dp</dimen>
+	<dimen name="value_40">40dp</dimen>
+	<dimen name="value_50">50dp</dimen>
+	<dimen name="value_150">150dp</dimen>
+	<dimen name="value_300">300dp</dimen>
 	
 	<!--Text Sizes-->
 	<dimen name="text_12">12sp</dimen>
