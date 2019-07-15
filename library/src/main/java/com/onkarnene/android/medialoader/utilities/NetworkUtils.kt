@@ -27,6 +27,9 @@ internal object NetworkUtils {
 	}
 	
 	fun getCaller(url: String): Call {
+		if (url.isEmpty() || url.isBlank()) {
+			throw IllegalArgumentException("Url should not be empty or blank.")
+		}
 		val request = Request.Builder().url(url).get().build()
 		return okHttpClient.newCall(request)
 	}
