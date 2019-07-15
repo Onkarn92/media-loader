@@ -8,10 +8,26 @@
 Robust, reliable and concise media loading (i.e. Image, JSON, PDf, etc.) library for Android focused on smooth scrolling and supports in-built configurable memory cache.
 
 ## Table of content
+- [Requirements](#Requirements)
+- [Dependencies](#Dependencies)
 - [Screens](#screens)
 - [Usage](#usage)
 - [Contributor](#contributor)
 - [License](#license)
+
+## Requirements
+
+- Android 5+
+
+## Dependencies
+
+Library intenally uses following dependencies:
+
+- [Dagger2](https://github.com/google/dagger)
+- [OkHttpClient](https://github.com/square/okhttp/)
+- [Coroutines](https://github.com/Kotlin/kotlinx.coroutines)
+- [JUnit](https://github.com/junit-team/junit4)
+- [Mockito](https://github.com/mockito/mockito)
 
 ## Usage
 
@@ -34,7 +50,7 @@ mediaLoader.cancel()
 
 ## Contributor
 
-* Onkar nene - omkarn.92@gmail.com
+* Onkar Nene - omkarn.92@gmail.com
 
 ## License
 
