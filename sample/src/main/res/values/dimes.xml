@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<dimen name="value_2">2dp</dimen>
+	<dimen name="value_5">5dp</dimen>
+	<dimen name="value_10">10dp</dimen>
+	<dimen name="value_30">30dp</dimen>
+	<dimen name="value_35">35dp</dimen>
+	
+	<!--Text Sizes-->
+	<dimen name="text_12">12sp</dimen>
+	<dimen name="text_14">14sp</dimen>
+</resources>

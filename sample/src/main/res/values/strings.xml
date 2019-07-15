@@ -1,3 +1,10 @@
 <resources>
-	<string name="app_name">Media Loader</string>
+	<string name="app_name">Media Loader Demo</string>
+	<string name="unsplash_implementation">Load list of images using unsplash API.</string>
+	<string name="try_unsplash">Try Unsplash</string>
+	<string name="user_implementation">Load 1000 user data from random user API.</string>
+	<string name="try_user">Try Random User</string>
+	<string name="same_image_implementation">Request same image multiple times simultaneously and cancel any call.</string>
+	<string name="try_same_image">Try</string>
+	<string name="default_likes">12</string>
 </resources>
