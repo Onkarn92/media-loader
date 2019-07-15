@@ -17,17 +17,20 @@ Robust, reliable and concise media loading (i.e. Image, JSON, PDf, etc.) library
 
 For a working implementation of this project see the sample/ folder.
 
-# Single Line
-MediaLoader.Builder<View>(context).load(url).into(imageView).create().download()
+#### Single Line
+<pre>MediaLoader.Builder<View>(context).load(url).into(imageView).create().download()</pre>
 
-# Download with pre-builded MediaLoader object
+#### Download with pre-builded MediaLoader object
+<pre>
 val mediaLoader = MediaLoader.Builder<View>(context).load(url).into(imageView).create()
 mediaLoader.download()
+</pre>
   
-# Cancel the request
+#### Cancel the request
+<pre>
 val mediaLoader = MediaLoader.Builder<View>(context).load(url).into(imageView).create()
 mediaLoader.cancel()
-  
+</pre>
 
 ## Contributor
 
