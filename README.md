@@ -29,6 +29,10 @@ Library intenally uses following dependencies:
 - [JUnit](https://github.com/junit-team/junit4)
 - [Mockito](https://github.com/mockito/mockito)
 
+## Screens
+
+<img src="https://raw.github.com/Onkarn92/media-loader/master/output/sample_app.gif" width="300" height="557">
+
 ## Usage
 
 For a working implementation of this project see the sample/ folder.
