@@ -8,8 +8,8 @@
 Robust, reliable and concise media loading (i.e. Image, JSON, PDf, etc.) library for Android focused on smooth scrolling and supports in-built configurable memory cache.
 
 ## Table of content
-- [Requirements](#Requirements)
-- [Dependencies](#Dependencies)
+- [Requirements](#requirements)
+- [Dependencies](#dependencies)
 - [Screens](#screens)
 - [Usage](#usage)
 - [Contributor](#contributor)
@@ -30,8 +30,7 @@ Library intenally uses following dependencies:
 - [Mockito](https://github.com/mockito/mockito)
 
 ## Screens
-
-<img src="https://raw.github.com/Onkarn92/media-loader/master/output/sample_app.gif" width="300" height="557">
+[Sample App](/output/sample_app.gif)
 
 ## Usage
 
