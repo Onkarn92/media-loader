@@ -1,4 +1,4 @@
-# MediaLoader
+# Media Loader
 
 [![Platform](https://img.shields.io/badge/platform-android-yellow.svg)]()
 [![Programming Language](https://img.shields.io/badge/language-kotlin-orange.svg)]()
@@ -8,9 +8,10 @@
 Robust, reliable and concise media loading (i.e. Image, JSON, PDf, etc.) library for Android focused on smooth scrolling and supports in-built configurable memory cache.
 
 ## Table of content
+
+- [Sample App](/output/sample_app.gif)
 - [Requirements](#requirements)
 - [Dependencies](#dependencies)
-- [Screens](#screens)
 - [Usage](#usage)
 - [Contributor](#contributor)
 - [License](#license)
@@ -28,9 +29,6 @@ Library intenally uses following dependencies:
 - [Coroutines](https://github.com/Kotlin/kotlinx.coroutines)
 - [JUnit](https://github.com/junit-team/junit4)
 - [Mockito](https://github.com/mockito/mockito)
-
-## Screens
-[Sample App](/output/sample_app.gif)
 
 ## Usage
 
